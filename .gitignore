@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+storage/screenshots/*
+storage/*
+logs/*
+venv/
