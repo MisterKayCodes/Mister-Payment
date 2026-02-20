@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "currency": "NGN",
+    "label": "Bank Transfer",
+    "account_name": "John Doe",
+    "account_address": "1234567890",
+    "is_active": true,
+    "created_at": "2026-02-20T12:00:00",
+    "updated_at": "2026-02-20T12:00:00"
+  }
+]
