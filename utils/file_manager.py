@@ -18,7 +18,7 @@ async def save_screenshot(file_bytes: bytes, original_filename: str) -> str:
     """
     Save screenshot to storage/screenshots/ asynchronously and return full path.
     """
-    # Directory check (already handled in config, but safe to keep)
+    # Directory check
     os.makedirs(config.SCREENSHOT_DIR, exist_ok=True)
     
     unique_name = generate_unique_filename(original_filename)
@@ -27,5 +27,6 @@ async def save_screenshot(file_bytes: bytes, original_filename: str) -> str:
     # Using aiofiles to save without blocking the bot
     async with aiofiles.open(file_path, mode="wb") as f:
         await f.write(file_bytes)
-        
-    return file_path
+    
+    # ADDED HERE: Normalize path for JSON storage (converts \ to /)
+    return file_path.replace("\\", "/")

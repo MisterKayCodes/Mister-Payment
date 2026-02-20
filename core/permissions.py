@@ -1,25 +1,44 @@
+import json
+import os
 from aiogram import types
 from aiogram.filters import BaseFilter
 from core.config import config
 
 class AdminFilter(BaseFilter):
-    """
-    A filter to check if the user is the admin.
-    Usage: @router.message(AdminFilter())
-    """
     async def __call__(self, message: types.Message) -> bool:
-        is_admin = message.from_user.id == config.ADMIN_USER_ID
+        user_id = message.from_user.id
         
-        if not is_admin:
-            # Optional: Notify user they aren't authorized
-            # Note: Filters usually just return False to let other handlers try,
-            # but if you want to explicitly block and reply, you can do it here:
-            await message.reply("❌ You are not authorized to use this command.")
+        # 1. Always allow the Master Admin from .env
+        if user_id == config.ADMIN_USER_ID:
+            return True
             
-        return is_admin
+        # 2. Check if this user has been "Crowned" in the config file
+        if os.path.exists(config.BOT_CONFIG_FILE):
+            try:
+                with open(config.BOT_CONFIG_FILE, "r") as f:
+                    data = json.load(f)
+                    authorized_admins = data.get("authorized_admins", [])
+                    # Convert to strings for safe comparison
+                    if str(user_id) in [str(a) for a in authorized_admins]:
+                        return True
+            except Exception:
+                pass
 
-def is_admin(user_id: int) -> bool:
+        return False
+
+async def is_admin(user_id: int) -> bool:
     """
-    Simple helper for non-handler logic.
+    Improved helper that checks both the .env and the JSON config.
     """
-    return user_id == config.ADMIN_USER_ID
+    if user_id == config.ADMIN_USER_ID:
+        return True
+        
+    if os.path.exists(config.BOT_CONFIG_FILE):
+        try:
+            with open(config.BOT_CONFIG_FILE, "r") as f:
+                data = json.load(f)
+                authorized = data.get("authorized_admins", [])
+                return str(user_id) in [str(a) for a in authorized]
+        except:
+            return False
+    return False

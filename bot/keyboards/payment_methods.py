@@ -1,10 +1,18 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-def generate_payment_keyboard(currencies):
+def generate_payment_keyboard(methods: list) -> InlineKeyboardMarkup:
     """
-    Generate a dynamic inline keyboard with all available currencies.
+    Creates a keyboard with one payment method per row.
+    'methods' is now a list of dictionaries.
     """
-    keyboard = InlineKeyboardMarkup(row_width=1)  # 1 button per row
-    for c in currencies:
-        keyboard.add(InlineKeyboardButton(text=c, callback_data=f"pay_{c}"))
-    return keyboard
+    builder = InlineKeyboardBuilder()
+
+    for m in methods:
+        # m is a dictionary, so m['currency'] works!
+        builder.row(InlineKeyboardButton(
+            text=f"💰 {m['currency']} - {m['label']}", 
+            callback_data=f"pay_{m['id']}"
+        ))
+
+    return builder.as_markup()

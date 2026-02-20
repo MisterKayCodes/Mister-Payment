@@ -1,12 +1,14 @@
 [
-  {
-    "id": "req_001",
-    "user_id": 12345,
-    "username": "user",
-    "currency": "NGN",
-    "screenshot_path": "storage/screenshots/file.jpg",
-    "status": "pending",
-    "admin_id": null,
-    "created_at": "2026-02-20T12:30:00"
-  }
+    {
+        "id": "req_1557125a",
+        "user_id": 1990399895,
+        "username": "Juliosupp",
+        "currency": "NGN",
+        "screenshot_path": "storage/screenshots/40da75cc41c8426ca9ab63a1327d6834.jpg",
+        "owner_id": 8526011565,
+        "status": "approved",
+        "admin_id": 8526011565,
+        "created_at": "2026-02-20T11:08:51.345740+00:00",
+        "updated_at": "2026-02-20T11:17:06.156080+00:00"
+    }
 ]

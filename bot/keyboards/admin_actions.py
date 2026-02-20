@@ -1,18 +1,21 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from core.enums import CallbackActions
+from aiogram.types import InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+from core.enums import CallbackActions, PaymentReviewCallback 
 
-def generate_admin_keyboard(request_id: str):
+def generate_admin_keyboard(request_id: str) -> InlineKeyboardMarkup:
     """
-    Generate approve/decline inline buttons for admin.
+    Generate approve/decline inline buttons for admin using the 3.x Builder.
     """
-    keyboard = InlineKeyboardMarkup(row_width=2)  # 2 buttons in one row
-    approve_button = InlineKeyboardButton(
+    builder = InlineKeyboardBuilder()
+
+    builder.button(
         text="✅ Approve",
-        callback_data=f"{CallbackActions.APPROVE}_{request_id}"
+        callback_data=PaymentReviewCallback(action=CallbackActions.APPROVE, request_id=request_id)
     )
-    decline_button = InlineKeyboardButton(
+    builder.button(
         text="❌ Decline",
-        callback_data=f"{CallbackActions.DECLINE}_{request_id}"
+        callback_data=PaymentReviewCallback(action=CallbackActions.DECLINE, request_id=request_id)
     )
-    keyboard.row(approve_button, decline_button)  # place both buttons in a single row
-    return keyboard
+
+    builder.adjust(2)
+    return builder.as_markup()

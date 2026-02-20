@@ -1,6 +1,14 @@
 {
-  "admin_contact_username": "admin_username",
-  "admin_user_id": 123456789,
-  "verification_note": "Verification may take some time. Please be patient.",
-  "auto_reply_message": "Your payment is being reviewed."
+    "vaults": {
+        "BOSS": 8526011565,
+        "TEASE": 8369977163
+    },
+    "user_bindings": {
+        "1990399895": 8526011565
+    },
+    "success_link": "https://t.me/titties",
+    "admin_contact": "ooo",
+    "authorized_admins": [
+        8369977163
+    ]
 }

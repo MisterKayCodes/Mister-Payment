@@ -10,8 +10,7 @@ class CallbackActions(str, Enum):
     APPROVE = "approve"
     DECLINE = "decline"
 
-# NEW: The v3 Callback Data Factory
-# This makes handling admin button clicks 100x easier
+# The v3 Callback Data Factory
 class PaymentReviewCallback(CallbackData, prefix="pay_rev"):
     action: CallbackActions
     request_id: str

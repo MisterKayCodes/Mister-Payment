@@ -1,12 +1,37 @@
 [
-  {
-    "id": "1",
-    "currency": "NGN",
-    "label": "Bank Transfer",
-    "account_name": "John Doe",
-    "account_address": "1234567890",
-    "is_active": true,
-    "created_at": "2026-02-20T12:00:00",
-    "updated_at": "2026-02-20T12:00:00"
-  }
+    {
+        "id": "79daa1f4",
+        "owner_id": 8526011565,
+        "currency": "NGN",
+        "label": "Kuda",
+        "name": "Josephine Atari",
+        "address": "2377117681",
+        "is_active": true,
+        "created_at": "2026-02-20T11:05:32.582769+00:00",
+        "updated_at": "2026-02-20T11:05:32.582769+00:00"
+    },
+    {
+        "id": "7e46dbad",
+        "owner_id": 8526011565,
+        "currency": "KES",
+        "label": "Mpesa",
+        "name": "kiriko",
+        "address": "2336172778",
+        "amount": "2800",
+        "is_active": true,
+        "created_at": "2026-02-20T11:26:08.135627+00:00",
+        "updated_at": "2026-02-20T11:26:08.135627+00:00"
+    },
+    {
+        "id": "fcafc3b4",
+        "owner_id": 8369977163,
+        "currency": "WEMA BANK",
+        "label": "NGN",
+        "name": "Stephanie",
+        "address": "0252419379",
+        "amount": "10000",
+        "is_active": true,
+        "created_at": "2026-02-20T11:42:46.448858+00:00",
+        "updated_at": "2026-02-20T11:42:46.448858+00:00"
+    }
 ]
