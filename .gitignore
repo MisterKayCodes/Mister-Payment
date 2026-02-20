@@ -1,7 +1,11 @@
+# Python
 __pycache__/
 *.pyc
-.env
-storage/screenshots/*
-storage/*
-logs/*
+*.pyo
+*.pyd
+*.env
 venv/
+.env
+logs/
+storage/screenshots/
+*.sqlite3
