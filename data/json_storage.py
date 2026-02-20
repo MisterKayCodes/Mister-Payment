@@ -1,44 +1,47 @@
 import json
+import aiofiles
+import os
 from typing import List, Dict, Any
 
-def read_json(path: str) -> List[Dict[str, Any]]:
+async def read_json(path: str) -> List[Dict[str, Any]]:
     """
-    Load JSON file. Returns empty list if file doesn't exist.
+    Load JSON file asynchronously.
     """
+    if not os.path.exists(path):
+        return []
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-    except json.JSONDecodeError:
+        async with aiofiles.open(path, mode="r", encoding="utf-8") as f:
+            contents = await f.read()
+            return json.loads(contents)
+    except (FileNotFoundError, json.JSONDecodeError):
         return []
 
-def write_json(path: str, data: List[Dict[str, Any]]) -> None:
+async def write_json(path: str, data: List[Dict[str, Any]]) -> None:
     """
-    Overwrite JSON file with new data.
+    Overwrite JSON file asynchronously.
     """
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+    async with aiofiles.open(path, mode="w", encoding="utf-8") as f:
+        await f.write(json.dumps(data, indent=4))
 
-def append_record(path: str, record: Dict[str, Any]) -> None:
+async def append_record(path: str, record: Dict[str, Any]) -> None:
     """
-    Append a single record to JSON file.
+    Append a single record asynchronously.
     """
-    data = read_json(path)
+    data = await read_json(path)
     data.append(record)
-    write_json(path, data)
+    await write_json(path, data)
 
-def update_record(path: str, record_id: str, updates: Dict[str, Any]) -> bool:
+async def update_record(path: str, record_id: str, updates: Dict[str, Any]) -> bool:
     """
-    Update a record by id. Returns True if updated.
+    Update a record by id asynchronously.
     """
-    data = read_json(path)
+    data = await read_json(path)
     updated = False
     for item in data:
-        if item.get("id") == record_id:
+        if str(item.get("id")) == str(record_id): # String conversion for safety
             item.update(updates)
             updated = True
             break
     if updated:
-        write_json(path, data)
+        await write_json(path, data)
     return updated

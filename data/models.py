@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import Optional
 
 @dataclass
@@ -12,6 +12,9 @@ class PaymentMethod:
     created_at: str = ""
     updated_at: str = ""
 
+    def to_dict(self):
+        return asdict(self)
+
 @dataclass
 class PaymentRequest:
     id: str
@@ -24,9 +27,15 @@ class PaymentRequest:
     created_at: str = ""
     updated_at: str = ""
 
+    def to_dict(self):
+        return asdict(self)
+
 @dataclass
 class BotConfig:
     admin_contact_username: str
     admin_user_id: int
     verification_note: str = "Verification may take some time."
     auto_reply_message: str = "Your payment is being reviewed."
+
+    def to_dict(self):
+        return asdict(self)
