@@ -1,6 +1,6 @@
 from aiogram import types, Router, F
 from aiogram.filters import Command
-from core.permissions import AdminFilter  # I recommend changing your decorator to a Filter
+from core.permissions import AdminFilter
 from services.admin_service import (
     add_payment_method, edit_payment_method, 
     delete_payment_method, list_payment_methods, set_admin_contact
@@ -10,8 +10,7 @@ from bot.keyboards.admin_actions import generate_admin_keyboard
 
 router = Router()
 
-# You can apply the AdminFilter to the entire router 
-# so you don't have to repeat it for every function!
+# Apply AdminFilter to the entire router
 router.message.filter(AdminFilter()) 
 
 @router.message(Command("add_method"))
@@ -41,7 +40,7 @@ async def set_admin_contact_handler(message: types.Message):
 
 @router.message(Command("pending"))
 async def pending_payments_handler(message: types.Message):
-    requests = get_pending_requests()
+    requests = await get_pending_requests()
     
     if not requests:
         await message.answer("☕ No pending payments at the moment.")
@@ -53,6 +52,31 @@ async def pending_payments_handler(message: types.Message):
             f"👤 **User:** @{r['username']}\n"
             f"💰 **Currency:** {r['currency']}"
         )
-        # Ensure your keyboard generator is updated for v3 (using InlineKeyboardBuilder)
         keyboard = generate_admin_keyboard(r['id'])
         await message.reply(text, reply_markup=keyboard, parse_mode="Markdown")
+
+async def handle_approve_decline(callback: types.CallbackQuery):
+    """
+    Handle admin clicking Approve or Decline buttons.
+    """
+    data = callback.data.split("_")
+    action = data[0] # APPROVE or DECLINE
+    request_id = data[1]
+    
+    is_approve = action == "APPROVE"
+    
+    success = await update_payment_status(
+        request_id=request_id,
+        admin_id=callback.from_user.id,
+        approve=is_approve
+    )
+    
+    if success:
+        status_text = "✅ Approved" if is_approve else "❌ Declined"
+        await callback.message.edit_text(
+            f"{callback.message.text}\n\n**Status: {status_text}**",
+            parse_mode="Markdown"
+        )
+        await callback.answer(f"Payment {status_text.lower()}!")
+    else:
+        await callback.answer("❌ Error updating payment status.", show_alert=True)
